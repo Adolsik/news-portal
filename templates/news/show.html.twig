@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}News{% endblock %}
+
+{% block body %}
+<body class='bg-slate-100 text-xl flex items-center justify-center'>
+    <div class='flex justify-center items-center m-10 p-10 borderd bg-white w-auto rounded-lg shadow-lg'>
+        <pre>{{news.content}} </pre>
+    </div>
+</body>
+{% endblock %}

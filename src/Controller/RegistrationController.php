@@ -12,11 +12,12 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 
 class RegistrationController extends AbstractController
 {
@@ -24,8 +25,9 @@ class RegistrationController extends AbstractController
     public function register(Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $userPassword): Response
     {
 
+        // Building form
         $form = $this->createFormBuilder()
-        ->add('username')
+        ->add('username', TextType::class)
         ->add('password', RepeatedType::class, [
             'type' => PasswordType::class,
             'required' => true,
@@ -43,12 +45,10 @@ class RegistrationController extends AbstractController
         ])
         ->add('image', FileType::class)
         ->add('register', SubmitType::class, [
-            'attr' => [
-                'class' => 'border rounded-lg p-2 border-neutral-600 mt-10'
-            ]
         ])
         ->getForm();
 
+        // Handling registration
         $form->handleRequest($request);
 
         if($form->isSubmitted()){
@@ -63,8 +63,20 @@ class RegistrationController extends AbstractController
                 $userPassword->hashPassword($user, $form_data['password'])
             );
             $user->setGender($form_data['gender']);
-            $user->setImage($form_data['image']);
 
+            $file = $form['image']->getData();
+
+            if($file){
+                $filename = md5(uniqid()).".".$file->guessExtension();
+                $file->move(
+                    $this->getParameter('upload_dir'),
+                    $filename
+                );
+            } else {
+                $filename = 'default.jpg';
+            }
+
+            $user->setImage($filename);
             $manager->persist($user);
             $manager->flush();
 
