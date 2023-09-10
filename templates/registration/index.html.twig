@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+<body class='bg-slate-200 font-sans text-xl flex items-center justify-center'>
+    <div class='flex justify-center items-center m-10 p-10 border border-neutral-600 w-auto  rounded-lg'>
+    {{ form(form, {'method': 'POST'}) }}
+    </div>
+</body>
+{% endblock %}
