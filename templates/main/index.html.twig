@@ -3,7 +3,7 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-
+{# Navbar #}
 <nav class="border-gray-200 dark:bg-gray-900 flex ">
   <div class="flex items-start justify-start p-4 w-full">
     <a href="{{path('home')}}" class="flex items-center">
@@ -35,16 +35,49 @@
       {% endif %}
     </div>
 </nav>
+{# Navbar end #}
 
-{% for n in news %}
-    <div class='flex m-2 mt-4 shadow-lg rounded-lg'>
-      <img src='{{'../uploads/' ~ n.thumbnail}}' width='150px' height='150px' class='rounded-lg' >
-      <label class='opacity-90 font-light p-2 pt-0 m-2 mt-0 h-1/2'>Added: {{n.createdate.format('d/m/Y')}} </label>
-      <a href='{{path('news.show', {id: n.id})}}'><label class='h-1/2 mt-5 -ml-36 text-sm md:text-2xl'>{{n.title}} </label></a>
+{# side navbar #}
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-gray-900">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                <a class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <span class="fs-5 d-none d-sm-inline">Menu</span>
+                </a>
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                    <li>
+                        <a href="{{path('home')}}" class="nav-link px-0 align-middle">
+                          <span class="ms-1 d-none d-sm-inline transition ease-in duration-150 text-white hover:border hover:p-2 rounded-lg">All news</span></a>
+                    </li>
+                    {% for c in category %}
+                    <li>
+                        <a href="{{path('home_category', {id: c.id})}}" class="nav-link px-0 align-middle">
+                          <span class="ms-1 d-none d-sm-inline transition ease-in duration-150 text-white hover:border hover:p-2 rounded-lg">{{c}}</span></a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {# content #}
+        <div class="col py-3">
+            {% for n in news|reverse %}
+            <div class='flex justify-center m-10'>
+            <div class="card" style="width: 40vw;">
+            <img src='{{'/news-portal/public/uploads/' ~ n.thumbnail}}' class="card-img-top" alt="thumbnail">
+            <div class="card-body">
+              <h5 class="card-title">{{n.title}}</h5>
+              <p class="card-text">{{n.content|slice(0,155)}}...</p>
+              <a href="{{path('news.show', {id: n.id})}}" class="btn btn-primary">Czytaj dalej</a>
+            </div>
+            <div class="card-footer text-body-secondary">
+              {{n.createdate.format('d/m/Y')}}, {{n.category}}
+            </div>
+          </div>
+          </div>
+          {% endfor %}
+        </div>
     </div>
-{% endfor %}
-
-
-
-
+</div>
+  {# sidenavbar ends #}
 {% endblock %}

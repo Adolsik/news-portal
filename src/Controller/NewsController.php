@@ -3,14 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\News;
+use App\Form\NewsType;
 use App\Repository\NewsRepository;
 use DateTimeInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,25 +19,13 @@ class NewsController extends AbstractController
     public function create(Request $request, ManagerRegistry $doctrine, ): Response
     {
         // Create form for adding news
-        $form = $this->createFormBuilder()
-        ->add('title', TextType::class)
-        ->add('content', TextareaType::class)
-        ->add('thumbnail', FileType::class)
-        ->add('submit', SubmitType::class, [
-            'label' => 'Create'
-        ])
-        ->getForm();
+        $news = new News();
+        $form = $this->createForm(NewsType::class, $news);
 
         $form->handleRequest($request);
 
         if($form->isSubmitted()){
             $manager = $doctrine->getManager();
-
-            $form_data = $form->getData();
-
-            $news = new News();
-            $news->setTitle($form_data['title']);
-            $news->setContent($form_data['content']);
 
             $dateNow = new \DateTime('@'.strtotime('now'));
             $news->setCreateDate($dateNow);
@@ -62,7 +47,6 @@ class NewsController extends AbstractController
             $manager->flush();
 
             return $this->redirect($this->generateUrl('home'));
-
         }
 
         return $this->render('news/index.html.twig', [

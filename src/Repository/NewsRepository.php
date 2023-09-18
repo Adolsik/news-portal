@@ -21,28 +21,22 @@ class NewsRepository extends ServiceEntityRepository
         parent::__construct($registry, News::class);
     }
 
-//    /**
-//     * @return News[] Returns an array of News objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('n.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function FindByCategory(int $id){
 
-//    public function findOneBySomeField($value): ?News
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $qb = $this->createQueryBuilder('n');
+        $qb->select('n.title')
+        ->addSelect('n.content')
+        ->addSelect('n.create_date as createdate')
+        ->addSelect('n.thumbnail')
+        ->addSelect('c.id as cat_id')
+        ->addSelect('c.name as category')
+        ->addSelect('n.id as id')
+        ->innerJoin('n.category', 'c')
+        ->where('c.id = :id')
+        ->setParameter('id', $id);
+
+        return $qb->getQuery()->getResult();
+    }
+
+//    
 }

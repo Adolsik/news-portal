@@ -17,7 +17,7 @@ class News
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 65535)]
     private ?string $content = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -25,6 +25,9 @@ class News
 
     #[ORM\Column(length: 255)]
     private ?string $thumbnail = null;
+
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\Category', inversedBy:'news')]
+    private $category;
 
     public function getId(): ?int
     {
@@ -75,6 +78,18 @@ class News
     public function setThumbnail(string $thumbnail): static
     {
         $this->thumbnail = $thumbnail;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }
