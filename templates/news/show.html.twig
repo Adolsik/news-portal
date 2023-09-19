@@ -48,5 +48,54 @@
 <div class='flex m-10 p-10 border bg-white w-auto rounded-lg shadow-lg'>
     <pre class='whitespace-pre-wrap font-sans'>{{news.content}} </pre>
 </div>
+<hr>
+{# Comments section #}
+
+{% if is_granted('ROLE_USER')%}
+    <div class='flex justify-start border m-2 p-2 rounded-lg shadow-sm'>
+    {{ form(form, {'method': 'POST'}) }}
+    </div>
+{% else %}
+    <div class='flex justify-center text-2xl font-sans'>
+      U need to sign in to post a comment.
+    </div>
+{% endif %}
+
+{# Display comments #}
+{% if comments %}
+<section class="gradient-custom">
+  <div class="container my-5 py-5">
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-12 col-lg-10 col-xl-8">
+        <div class="card">
+          <div class="card-body p-4">
+            <h4 class="text-center mb-4 pb-2">Comments</h4>
+{% for comment in comments|reverse %}
+           <div class="d-flex flex-start mt-4">
+                  <img class="rounded-circle shadow-1-strong me-3"
+                    src="{{ '/news-portal/public/uploads/' ~ comment.image }}" alt="avatar" width="65"
+                    height="65" />
+                  <div class="flex-grow-1 flex-shrink-1">
+                    <div>
+                      <div class="d-flex justify-content-between align-items-center">
+                        <p class="mb-1">
+                          {{comment.username}} <span class="small">- 2 hours ago todo</span>
+                        </p>
+                      </div>
+                      <p class="small mb-0">
+                        {{comment.content}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+{% endfor %}
+</div>
+</div>
+</div>
+</div>
+</section>
+{% endif %}
+
 
 {% endblock %}

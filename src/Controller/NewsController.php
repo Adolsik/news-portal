@@ -2,15 +2,21 @@
 
 namespace App\Controller;
 
+use App\Entity\Comments;
 use App\Entity\News;
+use App\Form\CommentsType;
 use App\Form\NewsType;
+use App\Repository\CommentsRepository;
 use App\Repository\NewsRepository;
+use App\Repository\UserRepository;
+use ContainerDx7qGlb\getUserInterfaceService;
 use DateTimeInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route("/news", name: "news.")]
 class NewsController extends AbstractController
@@ -55,11 +61,37 @@ class NewsController extends AbstractController
     }
 
     #[Route(path: '/show/{id}', name: 'show')]
-    public function show($id, NewsRepository $repo){
+    public function show($id, NewsRepository $repo, CommentsRepository $comRepo, Request $request, ManagerRegistry $doctrine,  ){
         $news = $repo->find($id);
 
+        $allComments = $comRepo->getNewsComments($id);
+   
+        #Comments 
+        $comment = new Comments();
+        $form = $this->createForm(CommentsType::class, $comment);
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted()){
+
+            $manager = $doctrine->getManager();
+
+            $comment->setNews($news);
+
+            $comment->setUser($this->getUser());
+
+            $content = $form['content']->getData();
+            $comment->setContent($content);
+
+            $manager->persist($comment);
+            $manager->flush();
+
+            return $this->redirect($request->getUri());
+        }
+
         return $this->render('news/show.html.twig',[
-            'news' => $news
+            'news' => $news,
+            'form' => $form->createView(),
+            'comments' => $allComments
         ]);
     }
 }
