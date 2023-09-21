@@ -19,11 +19,11 @@ class Category
     private ?string $name = null;
 
     #[ORM\OneToMany(targetEntity: 'App\Entity\News', mappedBy:'category')]
-    private $post;
+    private $news;
 
     public function __construct()
     {
-        $this->post = new ArrayCollection();
+        $this->news = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -43,38 +43,38 @@ class Category
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->name;
+    }
+
     /**
      * @return Collection<int, News>
      */
-    public function getPost(): Collection
+    public function getNews(): Collection
     {
-        return $this->post;
+        return $this->news;
     }
 
-    public function addPost(News $post): static
+    public function addNews(News $news): static
     {
-        if (!$this->post->contains($post)) {
-            $this->post->add($post);
-            $post->setCategory($this);
+        if (!$this->news->contains($news)) {
+            $this->news->add($news);
+            $news->setCategory($this);
         }
 
         return $this;
     }
 
-    public function removePost(News $post): static
+    public function removeNews(News $news): static
     {
-        if ($this->post->removeElement($post)) {
+        if ($this->news->removeElement($news)) {
             // set the owning side to null (unless already changed)
-            if ($post->getCategory() === $this) {
-                $post->setCategory(null);
+            if ($news->getCategory() === $this) {
+                $news->setCategory(null);
             }
         }
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->name;
     }
 }

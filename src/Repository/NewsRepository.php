@@ -38,5 +38,26 @@ class NewsRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function FindLatestNews(){
+        $qb = $this->createQueryBuilder('n');
+        $qb->select('n.title')
+        ->addSelect('n.content')
+        ->addSelect('n.thumbnail')
+        ->addSelect('n.id')
+        ->orderBy('n.id','DESC')
+        ->setMaxResults(3);
+        
+        return $qb->getQuery()->getResult();
+    }
+
+    public function DeleteNews(int $id){
+        $qb = $this->createQueryBuilder('n');
+        $qb->delete()
+        ->where('n.id = :id')
+        ->setParameter('id', $id);
+
+        return $qb->getQuery()->getResult();
+    }
+
 //    
 }

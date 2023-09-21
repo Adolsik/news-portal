@@ -27,6 +27,7 @@ class CommentsRepository extends ServiceEntityRepository
         $qb->select('com.content')
         ->innerJoin('com.user','user')
         ->innerJoin('com.news', 'news')
+        ->addSelect('com.date')
         ->addSelect('user.username')
         ->addSelect('user.image')
         ->addSelect('news.id')

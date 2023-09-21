@@ -8,15 +8,13 @@ use App\Form\CommentsType;
 use App\Form\NewsType;
 use App\Repository\CommentsRepository;
 use App\Repository\NewsRepository;
-use App\Repository\UserRepository;
-use ContainerDx7qGlb\getUserInterfaceService;
-use DateTimeInterface;
+use App\Service\CommentsGenerator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route("/news", name: "news.")]
 class NewsController extends AbstractController
@@ -61,37 +59,39 @@ class NewsController extends AbstractController
     }
 
     #[Route(path: '/show/{id}', name: 'show')]
-    public function show($id, NewsRepository $repo, CommentsRepository $comRepo, Request $request, ManagerRegistry $doctrine,  ){
+    public function show($id, NewsRepository $repo, CommentsRepository $comRepo, Request $request, ManagerRegistry $doctrine, CommentsGenerator $commentsGenerator ){
         $news = $repo->find($id);
+        $allNews = $repo->FindLatestNews();
 
         $allComments = $comRepo->getNewsComments($id);
    
-        #Comments 
+        #Comments form handling
         $comment = new Comments();
         $form = $this->createForm(CommentsType::class, $comment);
         $form->handleRequest($request);
         
         if($form->isSubmitted()){
-
-            $manager = $doctrine->getManager();
-
-            $comment->setNews($news);
-
-            $comment->setUser($this->getUser());
-
-            $content = $form['content']->getData();
-            $comment->setContent($content);
-
-            $manager->persist($comment);
-            $manager->flush();
-
+            $form = $commentsGenerator->handleComments($comment, $form, $news, $this->getUser(), $doctrine);
+            
             return $this->redirect($request->getUri());
         }
 
         return $this->render('news/show.html.twig',[
             'news' => $news,
+            'allNews' =>$allNews,
             'form' => $form->createView(),
             'comments' => $allComments
         ]);
     }
+
+    #[Route(path: '/delete/{id}', name: 'delete')]
+    public function delete($id, NewsRepository $news, ManagerRegistry $doctrine)
+    {
+        $manager = $doctrine->getManager();
+        $news->DeleteNews($id);
+
+        $manager->flush();
+
+        return $this->redirectToRoute('home');
+    }   
 }

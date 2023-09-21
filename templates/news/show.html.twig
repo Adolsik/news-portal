@@ -1,101 +1,116 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}News{% endblock %}
+{% block title %}News
+{% endblock %}
 
 {% block body %}
-{# Navbar #}
-<nav class="border-gray-200 dark:bg-gray-900 flex ">
-  <div class="flex items-start justify-start p-4 w-full">
-    <a href="{{path('home')}}" class="flex items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 ">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
-        </svg>
-        <span class="text-2xl font-semibold  dark:text-white p-2">News Portal</span>
-    </a>
-    </div>
-    <div class='flex justify-end items-end w-full'  id="navbar-default">
-      {% if not is_granted('ROLE_USER') %}
-      <ul class="font-medium text-xl flex flex-col p-4 md:p-0 mt-1 bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-        <li>
-          <a href="{{path('app_login')}}" class="no-underline block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" aria-current="page">Sign in</a>
-        </li>
-        <li>
-          <a href="{{path('app_register')}}" class="no-underline block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Sign up</a>
-        </li>
-      </ul>
-      {% endif %}
-      {% if is_granted('ROLE_USER') %}
-          <ul class="font-medium text-xl flex flex-col p-4 md:p-0 mt-1 bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-           <li>
-          <a href="" class="no-underline block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Profile</a>
-        </li>
-          <a href="{{path('app_logout')}}" class="no-underline block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Logout</a>
-        </li>
-      </ul>
-      {% endif %}
-    </div>
+	{# Navbar #}
+	<nav class="border-gray-300 border-b-1 bg-[#1a1a1d] flex">
+		<div class="flex items-start justify-start p-4 w-full">
+			<a href="{{path('home')}}" class="flex items-center no-underline">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewbox="0 0 24 24" stroke-width="1.5" stroke="black" class="w-10 h-10 ">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z"/>
+				</svg>
+				<span class="text-2xl font-medium dark:text-white p-2">News Portal</span>
+			</a>
+		</div>
+		<div class='flex justify-end items-end w-full' id="navbar-default">
+			{% if not is_granted('ROLE_USER') %}
+				<ul class="font-medium text-xl flex flex-col p-4 md:p-0 mt-1 md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-[#1a1a1d] dark:border-gray-700">
+					<li>
+						<a href="{{path('app_login')}}" class="no-underline block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" aria-current="page">Sign in</a>
+					</li>
+					<li>
+						<a href="{{path('app_register')}}" class="no-underline block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Sign up</a>
+					</li>
+				</ul>
+			{% endif %}
+			{% if is_granted('ROLE_USER') %}
+				<ul class="font-medium text-xl flex flex-col p-4 md:p-0 mt-1 md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-[#1a1a1d] dark:border-gray-700">
+					<li>
+						<a href="" class="no-underline block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Profile</a>
+					</li>
+					<a href="{{path('app_logout')}}" class="no-underline block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Logout</a>
+				</li>
+			</ul>
+		{% endif %}
+	</div>
 </nav>
 {# Navbar end #}
-<div class='bg-white text-2xl'>
-    <h1 class='flex justify-center items-center m-4 shadow-sm p-2 font-serif'>{{news.title}}</h1>
-    <div class='flex justify-center m-10'>
-        <img src='{{ '/news-portal/public/uploads/' ~ news.thumbnail}}' width='500px' alt='thumbnail'> 
-    </div>
-    <div class='flex justify-start ml-10 mt-2 text-sm flex-wrap '>
-        <label> Added: {{news.createdate.format('d/m/Y')}}, {{news.category}} <label>
-    </div>
-</div>
-<div class='flex m-10 p-10 border bg-white w-auto rounded-lg shadow-lg'>
-    <pre class='whitespace-pre-wrap font-sans'>{{news.content}} </pre>
-</div>
-<hr>
-{# Comments section #}
+<div class='bg-white text-2xl overflow-hidden'>
+	<span class='flex justify-center items-center m-4 p-8 font-medium shadow-md'>{{news.title}}</span>
+	<div class='flex ml-10'>
+		<div class='lg:flex hidden'>
+			<img src='{{ '/news-portal/public/uploads/' ~ news.thumbnail}}' class='rounded-lg shadow-xl w-[80vw] shadow-gray-500' alt='thumbnail'>
+		</div>
+		<div class='w-1/2'>
+			{% for n in allNews %}
+			<div class='lg:flex pl-32 hidden'> 
+				<div class='inline-block m-1'>
+						<a href='{{path('news.show',{'id':n.id})}}' class='no-underline font-medium text-sm whitespace-pre-wrap'> {{n.title}} </a>
+						<img src='{{ '/news-portal/public/uploads/' ~ n.thumbnail}}' class='h-52 rounded-sm shadow-gray-500' alt='thumbnail'>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class='flex justify-start ml-10 mt-8 text-sm flex-wrap '>
+		<label>
+			Added:
+			{{news.createdate.format('d/m/Y')}},
+			{{news.category}}
+			<label></div>
+		</div>
+		<div class='flex m-10 p-10 border bg-white w-auto rounded-lg shadow-2xl'>
+			<pre class='whitespace-pre-wrap font-sans'>{{news.content}} </pre>
+		</div>
+		<hr>
+		{# Comments section #}
 
-{% if is_granted('ROLE_USER')%}
-    <div class='flex justify-start border m-2 p-2 rounded-lg shadow-sm'>
-    {{ form(form, {'method': 'POST'}) }}
-    </div>
-{% else %}
-    <div class='flex justify-center text-2xl font-sans'>
-      U need to sign in to post a comment.
-    </div>
-{% endif %}
+		{% if is_granted('ROLE_USER')%}
+			<div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+            {{ form(form, {'method': 'POST'}) }}
+            </div>
+			{% else %}
+				<div class='flex justify-center text-2xl font-sans'>
+					U need to sign in to post a comment.
+				</div>
+			{% endif %}
 
-{# Display comments #}
-{% if comments %}
-<section class="gradient-custom">
-  <div class="container my-5 py-5">
-    <div class="row d-flex justify-content-center">
-      <div class="col-md-12 col-lg-10 col-xl-8">
-        <div class="card">
-          <div class="card-body p-4">
-            <h4 class="text-center mb-4 pb-2">Comments</h4>
-{% for comment in comments|reverse %}
-           <div class="d-flex flex-start mt-4">
-                  <img class="rounded-circle shadow-1-strong me-3"
-                    src="{{ '/news-portal/public/uploads/' ~ comment.image }}" alt="avatar" width="65"
-                    height="65" />
-                  <div class="flex-grow-1 flex-shrink-1">
-                    <div>
-                      <div class="d-flex justify-content-between align-items-center">
-                        <p class="mb-1">
-                          {{comment.username}} <span class="small">- 2 hours ago todo</span>
-                        </p>
-                      </div>
-                      <p class="small mb-0">
-                        {{comment.content}}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <hr>
-{% endfor %}
-</div>
-</div>
-</div>
-</div>
-</section>
-{% endif %}
+			{# Display comments #}
+			{% if comments %}
+				<section class="gradient-custom">
+					<div class="container my-2 py-5">
+						<div class="row d-flex justify-content-center">
+							<div class="col-md-12 col-lg-10 col-xl-8">
+								<div class="card">
+									<div class="card-body p-4">
+										<h4 class="text-center mb-4 pb-2">Comments</h4>
+										{% for comment in comments|reverse %}
+											<div class="d-flex flex-start mt-4">
+												<img class="rounded-circle shadow-1-strong me-3" src="{{ '/news-portal/public/uploads/' ~ comment.image }}" alt="avatar" width="65" height="65"/>
+												<div class="flex-grow-1 flex-shrink-1">
+													<div>
+														<div class="d-flex justify-content-between align-items-center">
+															<p class="mb-1">
+																{{comment.username}}
+																<span class="small">- {{comment.date|date("m/d/Y h:i")}}</span>
+															</p>
+														</div>
+														<p class="small mb-0">
+															{{comment.content}}
+														</p>
+													</div>
+												</div>
+											</div>
+											<hr>
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+				{% endif %}
 
 
-{% endblock %}
+			{% endblock %}
