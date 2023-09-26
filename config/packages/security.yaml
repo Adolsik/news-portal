@@ -13,6 +13,10 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+                
+        all_users:
+            chain:
+                providers: ['admin','user']
         # used to reload user from session & other features (e.g. switch_user)
     firewalls:
         dev:
@@ -20,7 +24,7 @@ security:
             security: false
         main:
             lazy: true
-            provider: user
+            provider: all_users
             custom_authenticator: App\Security\CustomAuthAuthenticator
             logout:
                 path: app_logout
